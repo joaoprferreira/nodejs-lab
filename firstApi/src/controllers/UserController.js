@@ -2,7 +2,6 @@ const users = require('../mocks/users')
 
 module.exports = {
   listUsers(request, response) {
-    console.log('REQUEST QUE TA CHEGANDO DENTRO DA CONTROLLER', request.query)
     const { order } = request.query
 
     const sortedUsers = users.sort((a, b) => {
@@ -24,5 +23,27 @@ module.exports = {
       return response.send(400, { error: 'User not found' })
     }
     response.send(200, user)
+  },
+
+  createUser(request, response) {
+    let body = ''
+
+    request.on('data', (chunk) => {
+      body += chunk
+    })
+
+    request.on('end', () => {
+      body = JSON.parse(body)
+
+      const lastIdUser = users[users.length - 1].id
+      const newUser = {
+        id: lastIdUser + 1,
+        name: body.name,
+      }
+
+      users.push(newUser)
+
+      response.send(200, newUser)
+    })
   },
 }
