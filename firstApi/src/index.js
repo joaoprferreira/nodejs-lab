@@ -19,8 +19,6 @@ const server = http.createServer((request, response) => {
     id = splitEndpoint[1]
   }
 
-  console.log('splitedEnpoint:::', splitEndpoint)
-
   console.log(`Request method: ${request.method} | Endpoint: ${pathname}`)
 
   const route = routes.find(
@@ -28,8 +26,6 @@ const server = http.createServer((request, response) => {
       routesObject.endpoint === pathname &&
       routesObject.method === request.method
   )
-
-  console.log('ROUTE::', !!route)
 
   if (route) {
     request.query = Object.fromEntries(parsedUrl.searchParams)
